@@ -1,9 +1,9 @@
-PREFIX?=/usr/local
-INC=-I$(PREFIX)/include
-LIB=-L$(PREFIX)/lib
-CFLAGS=-Wall -Wextra -g -O2 -pipe -funroll-loops -ffast-math -fno-strict-aliasing
 CC?=cc
-AR?=ar
+PREFIX?=/usr/local
+CPPFLAGS=-I$(PREFIX)/include
+LDFLAGS=-L$(PREFIX)/lib
+CFLAGS=-Wall -Wextra -g -O2 -pipe -funroll-loops -ffast-math -fno-strict-aliasing
+CFLAGS+=$(CPPFLAGS)
 RANLIB?=ranlib
 
 LIBPIDUTIL = libpidutil.a
