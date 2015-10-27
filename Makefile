@@ -16,7 +16,7 @@ $(LIBPIDUTIL) : $(OBJS)
 	$(AR) rv $(LIBPIDUTIL) $?
 	$(RANLIB) $(LIBPIDUTIL)
 
-install:
+install: all
 	install -C $(LIBPIDUTIL) $(PREFIX)/lib
 	install -C $(HEADERS) $(PREFIX)/include
 
