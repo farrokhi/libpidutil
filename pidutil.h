@@ -1,6 +1,10 @@
 #ifndef _PIDUTIL_H
 #define _PIDUTIL_H
 
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+
 #include <sys/file.h>
 #include <sys/param.h>
 #include <sys/stat.h>
@@ -16,6 +20,7 @@
 #include <fcntl.h>
 #include <time.h>
 #include <string.h>
+#include <errno.h>
 
 struct pidfh;
 

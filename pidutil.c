@@ -9,6 +9,12 @@ struct pidfh {
 
 static int _pidfile_remove(struct pidfh *pfh, int freeit);
 
+#ifdef __linux__
+#define PROGNAME program_invocation_short_name
+#else
+#define PROGNAME getprogname()
+#endif /* __linux__ */
+
 static int
 pidfile_verify(const struct pidfh *pfh)
 {
@@ -133,7 +139,7 @@ pidfile_open(const char *path, mode_t mode, pid_t *pidptr)
 		return NULL;
 
 	if (path == NULL)
-		len = snprintf(pfh->pf_path, sizeof(pfh->pf_path), "/var/run/%s.pid", getprogname());
+		len = snprintf(pfh->pf_path, sizeof(pfh->pf_path), "/var/run/%s.pid", PROGNAME);
 	else
 		len = snprintf(pfh->pf_path, sizeof(pfh->pf_path), "%s", path);
 
