@@ -13,7 +13,7 @@ static int _pidfile_remove(struct pidfh *pfh, int freeit);
 #define PROGNAME program_invocation_short_name
 #else
 #define PROGNAME getprogname()
-#endif /* __linux__ */
+#endif					/* __linux__ */
 
 static int
 pidfile_verify(const struct pidfh *pfh)
