@@ -2,7 +2,7 @@ CC?=cc
 PREFIX?=/usr/local
 CPPFLAGS=-I$(PREFIX)/include
 LDFLAGS=-L$(PREFIX)/lib
-CFLAGS=-Wall -Wextra -g -O2 -pipe -funroll-loops -ffast-math -fno-strict-aliasing
+CFLAGS=-Wall -Werror -Wextra -std=c17 -g -O2 -pipe -funroll-loops -ffast-math -fno-strict-aliasing
 CFLAGS+=$(CPPFLAGS)
 RANLIB?=ranlib
 RM?=rm -f
