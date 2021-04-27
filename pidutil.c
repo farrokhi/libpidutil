@@ -22,15 +22,15 @@
  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #include "pidutil.h"
 
 struct pidfh {
-	int	pf_fd;
-	char	pf_path[MAXPATHLEN + 1];
-	dev_t	pf_dev;
-	ino_t	pf_ino;
+	int   pf_fd;
+	char  pf_path[MAXPATHLEN + 1];
+	dev_t pf_dev;
+	ino_t pf_ino;
 };
 
 static int _pidfile_remove(struct pidfh *pfh, int freeit);
@@ -39,7 +39,7 @@ static int _pidfile_remove(struct pidfh *pfh, int freeit);
 #define PROGNAME program_invocation_short_name
 #else
 #define PROGNAME getprogname()
-#endif					/* __linux__ */
+#endif /* __linux__ */
 
 static int
 pidfile_verify(const struct pidfh *pfh)
@@ -59,11 +59,10 @@ pidfile_verify(const struct pidfh *pfh)
 }
 
 int
-flopen(const char *path, int flags,...)
+flopen(const char *path, int flags, ...)
 {
-	int fd, operation, serrno, trunc;
 	struct stat sb, fsb;
-	int mode;
+	int	    fd, operation, serrno, trunc, mode;
 
 #ifdef O_EXLOCK
 	flags &= ~O_EXLOCK;
@@ -107,8 +106,7 @@ flopen(const char *path, int flags,...)
 			errno = serrno;
 			return (-1);
 		}
-		if (sb.st_dev != fsb.st_dev ||
-		    sb.st_ino != fsb.st_ino) {
+		if (sb.st_dev != fsb.st_dev || sb.st_ino != fsb.st_ino) {
 			/* changed under our feet */
 			(void)close(fd);
 			continue;
@@ -128,15 +126,15 @@ static int
 pidfile_read(const char *path, pid_t *pidptr)
 {
 	char buf[16], *endptr;
-	int error, fd, i;
+	int  error, fd, i;
 
 	fd = open(path, O_RDONLY | O_CLOEXEC);
 	if (fd == -1)
 		return (errno);
 
-	i = read(fd, buf, sizeof(buf) - 1);
-	error = errno;			/* Remember errno in case close()
-					 * wants to change it. */
+	i     = read(fd, buf, sizeof(buf) - 1);
+	error = errno; /* Remember errno in case close()
+			* wants to change it. */
 	close(fd);
 	if (i == -1)
 		return (error);
@@ -154,11 +152,11 @@ pidfile_read(const char *path, pid_t *pidptr)
 struct pidfh *
 pidfile_open(const char *path, mode_t mode, pid_t *pidptr)
 {
-	struct pidfh *pfh;
+	struct pidfh *	pfh;
 	struct timespec rqtp;
-	struct stat sb;
-	size_t len;
-	int fd, error, count;
+	struct stat	sb;
+	size_t		len;
+	int		fd, error, count;
 
 	pfh = malloc(sizeof(*pfh));
 	if (pfh == NULL)
@@ -181,8 +179,8 @@ pidfile_open(const char *path, mode_t mode, pid_t *pidptr)
 			if (pidptr == NULL) {
 				errno = EEXIST;
 			} else {
-				count = 20;
-				rqtp.tv_sec = 0;
+				count	     = 20;
+				rqtp.tv_sec  = 0;
 				rqtp.tv_nsec = 5000000;
 				for (;;) {
 					errno = pidfile_read(pfh->pf_path, pidptr);
@@ -207,7 +205,7 @@ pidfile_open(const char *path, mode_t mode, pid_t *pidptr)
 		errno = error;
 		return (NULL);
 	}
-	pfh->pf_fd = fd;
+	pfh->pf_fd  = fd;
 	pfh->pf_dev = sb.st_dev;
 	pfh->pf_ino = sb.st_ino;
 
@@ -252,7 +250,7 @@ int
 pidfile_write(struct pidfh *pfh)
 {
 	char pidstr[16];
-	int error, fd;
+	int  error, fd;
 
 	/*
 	 * Check remembered descriptor, so we don't overwrite some other file
